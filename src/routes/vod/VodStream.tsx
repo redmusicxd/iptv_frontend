@@ -42,13 +42,13 @@ export default function VodStream() {
     plugins: {
       eme: {
         keySystems: {
-          'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}?cf_bypass=1`
+          'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}`
         },
         // emeHeaders: 
       }
     },
     sources: [{
-      src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/vod/${show}/${epid}/index.m3u8?cf_bypass=1` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}?cf_bypass=1`,
+      src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/vod/${show}/${epid}/index.m3u8?cf_bypass=1` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}`,
       // type: 'video/mp4'
     }]
   };
