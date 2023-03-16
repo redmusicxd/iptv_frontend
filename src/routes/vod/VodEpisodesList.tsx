@@ -58,7 +58,7 @@ export default function VodEpisodesList() {
         <Alert status="error" w="50%">
           <AlertIcon />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error?.message}</AlertDescription>
+          <AlertDescription>{(error as any)?.message}</AlertDescription>
         </Alert>
       </Box>
     );
@@ -78,7 +78,7 @@ export default function VodEpisodesList() {
       </Box>
     );
 
-  if (data && data?.data?.length == 0) {
+  if (data && data?.pages[0].data?.length == 0) {
     return (
       <Box
         w="100%"

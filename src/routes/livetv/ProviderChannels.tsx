@@ -33,7 +33,7 @@ export default function ProviderChannels() {
           <AlertIcon />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            {error?.message}
+            {(error as any)?.message}
           </AlertDescription>
         </Alert>
       </Box>

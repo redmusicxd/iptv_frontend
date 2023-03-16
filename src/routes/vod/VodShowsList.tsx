@@ -55,7 +55,7 @@ export default function VodShowsList() {
         <Alert status="error" w="50%">
           <AlertIcon />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error?.message}</AlertDescription>
+          <AlertDescription>{(error as any)?.message}</AlertDescription>
         </Alert>
       </Box>
     );

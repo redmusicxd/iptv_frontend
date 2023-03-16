@@ -45,8 +45,8 @@ export default function ChannelStream() {
     }]
   };
 
-  const handlePlayerReady = (player: { on: (arg0: string, arg1: { (): void; (): void; }) => void; } | null) => {
-    playerRef.current = player;
+  const handlePlayerReady = (player: any) => {
+    playerRef!.current = player;
 
     // You can handle player events here, for example:
     player?.on('waiting', () => {
@@ -72,7 +72,7 @@ export default function ChannelStream() {
           <AlertIcon />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            {error?.message}
+            {(error as any)?.message}
           </AlertDescription>
         </Alert>
       </Box>

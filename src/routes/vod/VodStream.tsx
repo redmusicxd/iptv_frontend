@@ -53,7 +53,7 @@ export default function VodStream() {
     }]
   };
 
-  const handlePlayerReady = (player: { on: (arg0: string, arg1: { (): void; (): void; }) => void; } | null) => {
+  const handlePlayerReady = (player: any) => {
     playerRef.current = player;
 
     // You can handle player events here, for example:
@@ -82,7 +82,7 @@ export default function VodStream() {
         <Alert status="error" w="50%">
           <AlertIcon />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error?.message}</AlertDescription>
+          <AlertDescription>{(error as any)?.message}</AlertDescription>
         </Alert>
       </Box>
     );
