@@ -14,9 +14,9 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import videojs from "video.js";
 import getChannelStream from "../../apis/GetChannelStream";
-import VideoJS from "../../components/Player";
+import VideoJS from "../../components/Player.jsx";
 // @ts-ignore
-import 'videojs-contrib-eme';
+// import 'videojs-contrib-eme';
 
 export default function ChannelStream() {
   let { provider, channel } = useParams();
@@ -27,22 +27,10 @@ export default function ChannelStream() {
 
   const playerRef = React.useRef(null);
   const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    plugins: {
-      eme: {
-        keySystems: {
-          'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}`
-        },
-        // emeHeaders: 
-      }
+    src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/live/${channel}/index.m3u8?cf_bypass=1` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}`,
+    keySystems: {
+      'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}`
     },
-    sources: [{
-      src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/live/${channel}/index.m3u8?cf_bypass=1` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}`,
-      // type: 'video/mp4'
-    }]
   };
 
   const handlePlayerReady = (player: any) => {

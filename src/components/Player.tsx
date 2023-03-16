@@ -1,32 +1,47 @@
-import React from 'react';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
+import React from "react";
+import videojs from "video.js";
+// @ts-ignore
+import eme from "videojs-contrib-eme";
+import "video.js/dist/video-js.css";
+import Player from "video.js/dist/types/player";
 
-export function VideoJS (props: { options: any; onReady: any; }) {
+const registerPlugin = videojs.registerPlugin;
+
+registerPlugin("eme1", eme);
+
+interface EME extends Player {
+  eme1: Function;
+}
+
+export function VideoJS(props: any) {
   const videoRef = React.useRef<any>(null);
   const playerRef = React.useRef<any>(null);
-  const {options, onReady} = props;
+  const { options, onReady } = props;
 
   React.useEffect(() => {
-
     // Make sure Video.js player is only initialized once
     if (!playerRef.current) {
-      // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode. 
+      // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode.
       const videoElement = document.createElement("video-js");
 
-      videoElement.classList.add('vjs-big-play-centered');
-      videoRef.current!.appendChild(videoElement);
+      videoElement.classList.add("vjs-big-play-centered");
+      videoRef.current.appendChild(videoElement);
+      const player = videojs(
+        videoElement,
+        { autoplay: true, controls: true, responsive: true, fluid: true },
+        () => {
+          videojs.log("player is ready");
+          onReady && onReady(player);
+        }
+      ) as EME;
+      playerRef.current = player;
+      player.eme1();
 
-      const player = playerRef!.current = videojs(videoElement, options, () => {
-        videojs.log('player is ready');
-        onReady && onReady(player);
-      });
+      player.src(options);
 
-    // You could update an existing player in the `else` block here
-    // on prop change, for example:
     } else {
       const player = playerRef.current;
-
+      player.eme1();
       player.autoplay(options.autoplay);
       player.src(options.sources);
     }

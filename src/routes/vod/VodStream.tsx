@@ -23,7 +23,7 @@ import {  useParams } from "react-router-dom";
 import videojs from "video.js";
 import getVodStream from "../../apis/GetVodStream";
 import VideoJS from '../../components/Player';
-import "videojs-contrib-eme";
+// import "videojs-contrib-eme";
 
 export default function VodStream() {
   const playerRef = React.useRef(null);
@@ -35,22 +35,10 @@ export default function VodStream() {
     {retry: 2, refetchOnMount: true, refetchOnWindowFocus: false, refetchOnReconnect: false}
   );
   const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    plugins: {
-      eme: {
-        keySystems: {
-          'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}`
-        },
-        // emeHeaders: 
-      }
-    },
-    sources: [{
-      src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/vod/${show}/${epid}/index.m3u8?cf_bypass=1` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}`,
-      // type: 'video/mp4'
-    }]
+    src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/vod/${show}/${epid}/index.m3u8?cf_bypass=1` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}`,
+    keySystems: {
+      'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}`
+    }
   };
 
   const handlePlayerReady = (player: any) => {
