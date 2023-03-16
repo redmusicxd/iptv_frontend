@@ -48,7 +48,7 @@ export default function VodStream() {
       }
     },
     sources: [{
-      src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/vod/${show}/${epid}/index.m3u8` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}`,
+      src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/vod/${show}/${epid}/index.m3u8?cf_bypass=1` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}?cf_bypass=1`,
       // type: 'video/mp4'
     }]
   };
