@@ -30,9 +30,9 @@ export default function VodStream() {
 
   let { provider, show, epid } = useParams();
   const { data, status, isError, isFetching, error, isSuccess } = useQuery(
-    "getShows",
+    "getEpisodeStream",
     async () => getVodStream(provider || null, show || null, epid || null),
-    {}
+    {retry: 2, refetchOnMount: true, refetchOnWindowFocus: false, refetchOnReconnect: false}
   );
   const videoJsOptions = {
     autoplay: true,
@@ -42,13 +42,13 @@ export default function VodStream() {
     plugins: {
       eme: {
         keySystems: {
-          'com.widevine.alpha': data?.data?.drm?.url
+          'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}`
         },
         // emeHeaders: 
       }
     },
     sources: [{
-      src: data?.data?.stream,
+      src: data?.data?.stream.includes(".m3u8") ? `${import.meta.env.VITE_API_BASE_URL}/${provider}/vod/${show}/${epid}/index.m3u8` : `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}`,
       // type: 'video/mp4'
     }]
   };

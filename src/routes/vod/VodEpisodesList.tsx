@@ -5,12 +5,9 @@ import {
   AlertTitle,
   Box,
   Button,
-  ButtonGroup,
   Card,
   CardBody,
-  CardFooter,
-  CardHeader,
-  Divider,
+  Flex,
   Heading,
   Image,
   SimpleGrid,
@@ -18,17 +15,35 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Key } from "react";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
 import getEpisodesList from "../../apis/GetEpisodesList";
 
 export default function VodEpisodesList() {
   let { provider, show } = useParams();
-  const { data, status, isError, isFetching, error, isSuccess } = useQuery(
-    "getShows",
-    async () => getEpisodesList(provider || null, show || null),
-    {}
-  );
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+    isError,
+    isSuccess,
+    isFetchedAfterMount,
+    isFetched,
+    isLoading
+  } = useInfiniteQuery({
+    queryKey: "getEpisodesList",
+    queryFn: async ({ pageParam }) =>
+      getEpisodesList(provider || null, show || null, pageParam),
+    
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.data.pagination.current_page != lastPage.data.pagination.total_pages ? lastPage.data.pagination.current_page + 1 : null;
+    },
+    refetchOnWindowFocus: false,
+  });
 
   if (isError && !isFetching) {
     return (
@@ -49,7 +64,7 @@ export default function VodEpisodesList() {
     );
   }
 
-  if (isFetching)
+  if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
       <Box
         w="100%"
@@ -78,31 +93,48 @@ export default function VodEpisodesList() {
     );
   }
   return (
-    <SimpleGrid
-      spacing={4}
-      templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-      m="20px"
-      pb="50px"
-    >
-      {isSuccess &&
-        !isFetching &&
-        data?.data.data.map((item: any, i: Key | null | undefined) => (
-          <Card maxW="sm" as={Link} to={`/vod/${provider}/${show}/${item.id}`}>
-            <CardBody>
-              <Image
-                src={item.img}
-                alt="Green double couch with wooden legs"
-                borderRadius="lg"
-              />
-              <Stack mt="6" spacing="3">
-                <Heading size="md">{item.name }</Heading>
-                <Text>
-                  {new Date((item.date as Date)).toLocaleString()}
-                </Text>
-              </Stack>
-            </CardBody>
-          </Card>
-        ))}
-    </SimpleGrid>
+    <>
+      <SimpleGrid
+        spacing={4}
+        templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+        m="20px"
+        pb="50px"
+      >
+        {isSuccess &&
+          data.pages.map((page, i) =>
+            page?.data.data.map((item: any, i: Key | null | undefined) => (
+              <Card
+                maxW="sm"
+                as={Link}
+                to={`/vod/${provider}/${show}/${item.id}`}
+              >
+                <CardBody>
+                  <Image
+                    src={item.img}
+                    alt="Green double couch with wooden legs"
+                    borderRadius="lg"
+                  />
+                  <Stack mt="6" spacing="3">
+                    <Heading size="md">{item.name}</Heading>
+                    <Text>{new Date(item.date as Date).toLocaleString()}</Text>
+                  </Stack>
+                </CardBody>
+              </Card>
+            ))
+          )}
+      </SimpleGrid>
+      <Flex pb="5rem" pt="2rem" justifyContent="center">
+        <Button
+          onClick={() => fetchNextPage()}
+          disabled={!hasNextPage || isFetchingNextPage}
+        >
+          {isFetchingNextPage
+            ? "Loading more..."
+            : hasNextPage
+            ? "Load More"
+            : "Nothing more to load"}
+        </Button>
+      </Flex>
+    </>
   );
 }
