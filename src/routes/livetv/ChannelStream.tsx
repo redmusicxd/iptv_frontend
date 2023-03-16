@@ -40,7 +40,7 @@ export default function ChannelStream() {
       }
     },
     sources: [{
-      src: `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}`,
+      src: `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.stream}?cf_bypass=1`,
       // type: 'video/mp4'
     }]
   };

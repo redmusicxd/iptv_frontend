@@ -42,7 +42,7 @@ export default function VodStream() {
     plugins: {
       eme: {
         keySystems: {
-          'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}`
+          'com.widevine.alpha': `${import.meta.env.VITE_API_BASE_URL}/cors/${data?.data?.drm?.url}?cf_bypass=1`
         },
         // emeHeaders: 
       }
