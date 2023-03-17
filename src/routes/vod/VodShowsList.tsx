@@ -32,7 +32,7 @@ export default function VodShowsList() {
     status,
     isError,
     isSuccess,
-    isLoading
+    isLoading,
   } = useInfiniteQuery({
     queryKey: "getShowsList",
     queryFn: async ({ pageParam }) => getVodShows(provider || null, pageParam),
@@ -107,7 +107,17 @@ export default function VodShowsList() {
                 to={`/vod/${provider}/${item.id}`}
               >
                 <CardBody>
-                  <Image src={item.img} alt={item.name} borderRadius="lg" />
+                  <Image
+                    src={
+                      item.img ||
+                      "https://www.shutterstock.com/image-vector/picture-vector-icon-no-image-600w-1350441335.jpg"
+                    }
+                    width="100%"
+                    height={item.img ? "auto" : "90px"}
+                    objectFit="cover"
+                    alt={item.name}
+                    borderRadius="lg"
+                  />
                   <Stack mt="6" spacing="3">
                     <Heading size="md">{item.name}</Heading>
                     <Text>
@@ -123,7 +133,8 @@ export default function VodShowsList() {
       <Flex pb="5rem" pt="2rem" justifyContent="center">
         <Button
           onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetchingNextPage}
+          isDisabled={!hasNextPage || isFetchingNextPage}
+          isLoading={isFetchingNextPage}
         >
           {isFetchingNextPage
             ? "Loading more..."

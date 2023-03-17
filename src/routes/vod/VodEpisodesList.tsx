@@ -33,14 +33,17 @@ export default function VodEpisodesList() {
     isSuccess,
     isFetchedAfterMount,
     isFetched,
-    isLoading
+    isLoading,
   } = useInfiniteQuery({
     queryKey: "getEpisodesList",
     queryFn: async ({ pageParam }) =>
       getEpisodesList(provider || null, show || null, pageParam),
-    
+
     getNextPageParam: (lastPage, pages) => {
-      return lastPage.data.pagination.current_page != lastPage.data.pagination.total_pages ? lastPage.data.pagination.current_page + 1 : null;
+      return lastPage.data.pagination.current_page !=
+        lastPage.data.pagination.total_pages
+        ? lastPage.data.pagination.current_page + 1
+        : null;
     },
     refetchOnWindowFocus: false,
   });
@@ -110,7 +113,13 @@ export default function VodEpisodesList() {
               >
                 <CardBody>
                   <Image
-                    src={item.img}
+                    src={
+                      item.img ||
+                      "https://www.shutterstock.com/image-vector/picture-vector-icon-no-image-600w-1350441335.jpg"
+                    }
+                    width="100%"
+                    height={item.img ? "auto" : "90px"}
+                    objectFit="cover"
                     alt="Green double couch with wooden legs"
                     borderRadius="lg"
                   />
@@ -126,7 +135,8 @@ export default function VodEpisodesList() {
       <Flex pb="5rem" pt="2rem" justifyContent="center">
         <Button
           onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetchingNextPage}
+          isDisabled={!hasNextPage || isFetchingNextPage}
+          isLoading={isFetchingNextPage}
         >
           {isFetchingNextPage
             ? "Loading more..."
