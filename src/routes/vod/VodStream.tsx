@@ -29,7 +29,7 @@ export default function VodStream() {
   const playerRef = React.useRef(null);
 
   let { provider, show, epid } = useParams();
-  const { data, status, isError, isFetching, error, isSuccess } = useQuery(
+  const { data, status, isError, isFetching, error, isSuccess, isFetched, isFetchedAfterMount, isLoading } = useQuery(
     "getEpisodeStream",
     async () => getVodStream(provider || null, show || null, epid || null),
     {retry: 2, refetchOnMount: true, refetchOnWindowFocus: false, refetchOnReconnect: false}
@@ -76,7 +76,7 @@ export default function VodStream() {
     );
   }
 
-  if (isFetching)
+  if ((isFetching && !isFetchedAfterMount) || isLoading)
     return (
       <Box
         w="100%"
@@ -106,7 +106,7 @@ export default function VodStream() {
   }
   return (
     <>
-    {(isSuccess && !isFetching) && (
+    {(isSuccess) && (
       <Card mb="2">
         <CardBody>
             {/* <Text>{data?.data?.stream}</Text> */}
@@ -114,7 +114,7 @@ export default function VodStream() {
         </CardBody>
       </Card>
     )}
-    {(isSuccess && !isFetching) && data?.data?.drm && (
+    {(isSuccess) && data?.data?.drm && (
       <Card>
         <CardBody>
           <Text>{data?.data.drm.url}</Text>

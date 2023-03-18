@@ -37,7 +37,10 @@ export default function VodShowsList() {
     queryKey: "getShowsList",
     queryFn: async ({ pageParam }) => getVodShows(provider || null, pageParam),
     getNextPageParam: (lastPage, pages) => {
-      return lastPage.data.pagination.current_page + 1;
+      return lastPage.data.pagination.current_page !=
+      lastPage.data.pagination.total_pages
+      ? lastPage.data.pagination.current_page + 1
+      : null;
     },
     refetchOnWindowFocus: false,
   });

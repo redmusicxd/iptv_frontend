@@ -20,7 +20,7 @@ import VideoJS from "../../components/Player.jsx";
 
 export default function ChannelStream() {
   let { provider, channel } = useParams();
-  const { data, status, error, isFetching, isSuccess, isError } = useQuery("getStream", async () =>
+  const { data, status, error, isFetching, isSuccess, isError, isFetched, isFetchedAfterMount, isLoading } = useQuery("getStream", async () =>
     getChannelStream(provider || null, channel || null),
     {retry: 2, refetchOnMount: true, refetchOnWindowFocus: false, }
   );
@@ -67,7 +67,7 @@ export default function ChannelStream() {
     );
   }
 
-  if (isFetching)
+  if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
       <Box
         w="100%"
@@ -80,6 +80,7 @@ export default function ChannelStream() {
         <Heading>Loading...</Heading>
       </Box>
     );
+  
   return (
     <>
       {isSuccess && (
