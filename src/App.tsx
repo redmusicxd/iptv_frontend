@@ -1,13 +1,14 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import NoMatch from "./routes/NoMatch";
-import VodRoute from "./routes/vod/VodProvidersList";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import Toolbar from "./components/Toolbar";
-import { Box } from "@chakra-ui/react";
-import Index from "./routes/Index";
-import ProvidersList from "./routes/livetv/LiveProvidersList";
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+} from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import ProviderChannels from "./routes/livetv/ProviderChannels";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 
 const queryClient = new QueryClient();
 

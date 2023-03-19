@@ -1,9 +1,13 @@
+import { ArrowBackIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import {
   Alert,
   AlertDescription,
   AlertIcon,
   AlertTitle,
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Card,
   CardBody,
@@ -33,49 +37,109 @@ export default function VodShowsList() {
     isError,
     isSuccess,
     isLoading,
+    isFetched,
+    isFetchedAfterMount,
   } = useInfiniteQuery({
     queryKey: "getShowsList",
     queryFn: async ({ pageParam }) => getVodShows(provider || null, pageParam),
     getNextPageParam: (lastPage, pages) => {
       return lastPage.data.pagination.current_page !=
-      lastPage.data.pagination.total_pages
-      ? lastPage.data.pagination.current_page + 1
-      : null;
+        lastPage.data.pagination.total_pages
+        ? lastPage.data.pagination.current_page + 1
+        : null;
     },
     refetchOnWindowFocus: false,
   });
 
   if (isError && !isFetching) {
     return (
-      <Box
-        w="100%"
-        h="calc(100% - var(--toolbar-size))"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Alert status="error" w="50%">
-          <AlertIcon />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{(error as any)?.message}</AlertDescription>
-        </Alert>
-      </Box>
+      <>
+        <Breadcrumb
+          pl="5"
+          pt="2"
+          separator={<ChevronRightIcon color="gray.500" />}
+        >
+          <Button mr="4" as={Link} to=".." relative="path">
+            <ArrowBackIcon color="white.500" />
+          </Button>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={Link} to="/">
+              Home
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={Link} to="/vod" isCurrentPage>
+              VOD
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink as={Link} to={`/vod/${provider}`}>
+              {provider
+                ?.split("-")
+                .map((a: string) => a[0].toUpperCase() + a.substring(1))
+                .join(" ")}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
+        <Box
+          w="100%"
+          h="calc(100% - var(--toolbar-size))"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Alert status="error" w="50%">
+            <AlertIcon />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{(error as any)?.message}</AlertDescription>
+          </Alert>
+        </Box>
+      </>
     );
   }
 
-  if (isLoading)
+  if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
-      <Box
-        w="100%"
-        h="calc(100% - var(--toolbar-size))"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Heading>Loading...</Heading>
-      </Box>
+      <>
+        <Breadcrumb
+          pl="5"
+          pt="2"
+          separator={<ChevronRightIcon color="gray.500" />}
+        >
+          <Button mr="4" as={Link} to=".." relative="path">
+            <ArrowBackIcon color="white.500" />
+          </Button>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={Link} to="/">
+              Home
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={Link} to="/vod" isCurrentPage>
+              VOD
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink as={Link} to={`/vod/${provider}`}>
+              {provider
+                ?.split("-")
+                .map((a: string) => a[0].toUpperCase() + a.substring(1))
+                .join(" ")}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
+        <Box
+          w="100%"
+          h="calc(100% - var(--toolbar-size))"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Heading>Loading...</Heading>
+        </Box>
+      </>
     );
 
   if (data && data?.pages[0]?.data?.length == 0) {
@@ -94,6 +158,33 @@ export default function VodShowsList() {
   }
   return (
     <>
+      <Breadcrumb
+        pl="5"
+        pt="2"
+        separator={<ChevronRightIcon color="gray.500" />}
+      >
+        <Button mr="4" as={Link} to=".." relative="path">
+          <ArrowBackIcon color="white.500" />
+        </Button>
+        <BreadcrumbItem>
+          <BreadcrumbLink as={Link} to="/">
+            Home
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink as={Link} to="/vod" isCurrentPage>
+            VOD
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink as={Link} to={`/vod/${provider}`}>
+            {provider
+              ?.split("-")
+              .map((a: string) => a[0].toUpperCase() + a.substring(1))
+              .join(" ")}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
       <SimpleGrid
         spacing={4}
         templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
@@ -108,6 +199,7 @@ export default function VodShowsList() {
                 key={i}
                 as={Link}
                 to={`/vod/${provider}/${item.id}`}
+                state={{ show: item.name }}
               >
                 <CardBody>
                   <Image
