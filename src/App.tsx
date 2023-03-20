@@ -18,11 +18,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Box h="100%">
         <Toolbar />
-        <Flex alignItems="center">
-          {location.pathname != "/" && <Button ml="5" mb="4" mt="4" w="30px" as={Link} to=".." relative="path">
+        <Flex align="center" ml="5" mb="4" mt="4">
+          {location.pathname != "/" && <Button  w="30px" as={Link} to=".." relative="path">
             <ArrowBackIcon color="white.500" />
           </Button>}
-          <Text mb="2" ml="2" fontSize="lg">
+          <Text ml="2" fontSize="lg">
             {location.pathname != "/" && (location.state?.[
               location.pathname.split("/").filter((i) => i)[
                 location.pathname.split("/").filter((i) => i).length - 1

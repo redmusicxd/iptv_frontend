@@ -54,7 +54,7 @@ export default function Toolbar() {
         icon={<HamburgerIcon />}
         onClick={onDrawerOpen}
         alignSelf="center"
-        ml="1.2rem"
+        ml="5"
       ></IconButton>
         <Breadcrumb
           pl="5"
@@ -98,7 +98,7 @@ export default function Toolbar() {
         // shadow="sm"
         onClick={toggleColorMode}
         style={{ WebkitTapHighlightColor: "transparent" }}
-        mx="2"
+        mx="5"
         // bg={colorMode === "dark" ? "blackAlpha.400" : "whiteAlpha.400"}
       >
         <Icon w="4" h="4" as={colorMode === "light" ? SunIcon : MoonIcon} />

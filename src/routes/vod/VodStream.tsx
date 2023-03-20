@@ -6,7 +6,9 @@ import {
   Box,
   Card,
   CardBody,
+  Flex,
   Heading,
+  Skeleton,
   Text,
 } from "@chakra-ui/react";
 import React from "react";
@@ -91,18 +93,9 @@ export default function VodStream() {
 
   if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
-      <>
-        <Box
-          w="100%"
-          h="calc(100% - var(--toolbar-size))"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Heading>Loading...</Heading>
+        <Box p="6" bg="white" w="100%">
+          <Skeleton height="260px"/>
         </Box>
-      </>
     );
 
   if (data && data?.data?.length == 0) {

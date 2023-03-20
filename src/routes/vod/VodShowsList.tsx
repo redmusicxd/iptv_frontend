@@ -9,11 +9,15 @@ import {
   CardBody,
   Flex,
   Heading,
+  HStack,
   Image,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
+  VStack,
 } from "@chakra-ui/react";
+import React from "react";
 import { Key } from "react";
 import { useInfiniteQuery } from "react-query";
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -46,6 +50,8 @@ export default function VodShowsList() {
     refetchOnWindowFocus: false,
   });
 
+  const [isLoaded, setIsLoaded] = React.useState(false);
+
   const location = useLocation();
 
   if (isError && !isFetching) {
@@ -71,18 +77,15 @@ export default function VodShowsList() {
 
   if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
-      <>
-        <Box
-          w="100%"
-          h="calc(100% - var(--toolbar-size))"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Heading>Loading...</Heading>
-        </Box>
-      </>
+      <Flex wrap="wrap" justify="center" gap="4">
+        {Array.from({ length: 8 }, (_: any, i: number) => i + 1).map((_, i) => (
+          <Skeleton maxW="218px" h="218px" m="0" key={i}>
+            <Card maxW="sm">
+              <CardBody w="218px" h="219px"></CardBody>
+            </Card>
+          </Skeleton>
+        ))}
+      </Flex>
     );
 
   if (data && data?.pages[0]?.data?.length == 0) {
@@ -115,7 +118,7 @@ export default function VodShowsList() {
                 key={i}
                 as={Link}
                 to={`/vod/${provider}/${item.id}`}
-                state={{...location.state, [item.id]: item.name }}
+                state={{ ...location.state, [item.id]: item.name }}
               >
                 <CardBody>
                   <Image

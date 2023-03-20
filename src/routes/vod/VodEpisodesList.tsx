@@ -11,6 +11,7 @@ import {
   Heading,
   Image,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -72,18 +73,15 @@ export default function VodEpisodesList() {
 
   if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
-      <>
-        <Box
-          w="100%"
-          h="calc(100% - var(--toolbar-size))"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Heading>Loading...</Heading>
-        </Box>
-      </>
+      <Flex wrap="wrap" justify="center" gap="4">
+        {Array.from({ length: 8 }, (_: any, i: number) => i + 1).map((_, i) => (
+          <Skeleton maxW="218px" h="218px" m="0" key={i}>
+            <Card maxW="sm">
+              <CardBody w="218px" h="219px"></CardBody>
+            </Card>
+          </Skeleton>
+        ))}
+      </Flex>
     );
 
   if (data && data?.pages[0].data?.length == 0) {
