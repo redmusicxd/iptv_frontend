@@ -39,6 +39,7 @@ export default function Toolbar() {
       display="flex"
       pos="sticky"
       top="0"
+      flexShrink="0"
       zIndex={999}
       h="var(--toolbar-size)"
       bgColor={colorMode == "dark" ? "gray.900" : "gray.50"}
@@ -57,7 +58,8 @@ export default function Toolbar() {
         ml="5"
       ></IconButton>
         <Breadcrumb
-          pl="5"
+        pl="5"
+        overflow={['auto']}
           // pt="2"
           // pb="5"
           separator={<ChevronRightIcon color="gray.500" />}
@@ -83,11 +85,13 @@ export default function Toolbar() {
                   )}${item}`}
                   state={{ ...location.state }}
                 >
-                  {location.state?.[item] ||
-                    item
-                      .split("-")
-                      .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                      .join(" ")}
+                  <Text noOfLines={1}>
+                    {location.state?.[item] ||
+                      item
+                        .split("-")
+                        .map((a: string) => a[0].toUpperCase() + a.substring(1))
+                        .join(" ")}
+                  </Text>
                 </BreadcrumbLink>
               </BreadcrumbItem>
             ))}

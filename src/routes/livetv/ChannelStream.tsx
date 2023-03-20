@@ -88,7 +88,7 @@ export default function ChannelStream(props) {
       <>
         <Box
           w="100%"
-          h="calc(100% - var(--toolbar-size))"
+          h="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"
@@ -107,7 +107,7 @@ export default function ChannelStream(props) {
   if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
         <Box p="6" bg="white" w="100%">
-          <Skeleton height="260px"/>
+          <Skeleton height="260px" borderRadius="4"/>
         </Box>
     );
 

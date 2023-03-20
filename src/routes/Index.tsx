@@ -6,14 +6,11 @@ export default function Index() {
   return (
     <Box
       w="100%"
-      h="calc(100% - var(--toolbar-size))"
+      h="100%"
       display="flex"
       justifyContent="center"
       alignItems="center"
     >
-      {/* <Text color="rgba(255, 255, 255, 0.7)">
-        Select a category from the menu
-      </Text> */}
       <Wrap spacing="50px" justify="center">
         <WrapItem>
           <Card as={Link} to="/live" state={{live: "Live TV"}}>

@@ -9,7 +9,9 @@ import {
   Flex,
   Heading,
   Image,
+  SimpleGrid,
   Skeleton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Key } from "react";
 import { useQuery } from "react-query";
@@ -18,7 +20,7 @@ import getChannels from "../../apis/GetChannels";
 
 export default function ProviderChannels() {
   let { provider } = useParams();
-  let location = useLocation()
+  let location = useLocation();
   const {
     data,
     status,
@@ -38,7 +40,7 @@ export default function ProviderChannels() {
       <>
         <Box
           w="100%"
-          h="calc(100% - var(--toolbar-size))"
+          h="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"
@@ -58,7 +60,7 @@ export default function ProviderChannels() {
     return (
       <Flex wrap="wrap" justify="center" gap="4">
         {Array.from({ length: 8 }, (_: any, i: number) => i + 1).map((_, i) => (
-          <Skeleton maxW="218px" h="218px" m="0" key={i}>
+          <Skeleton maxW="218px" h="218px" m="0" key={i} borderRadius="4">
             <Card maxW="sm">
               <CardBody w="218px" h="219px"></CardBody>
             </Card>
@@ -72,7 +74,7 @@ export default function ProviderChannels() {
       <>
         <Box
           w="100%"
-          h="calc(100% - var(--toolbar-size))"
+          h="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"
@@ -85,51 +87,43 @@ export default function ProviderChannels() {
       </>
     );
   }
+  const cardHover = useColorModeValue("blackAlpha.300", "whiteAlpha.300");
   return (
-    <>
-      <Flex
-        wrap="wrap"
-        gap={4}
-        justifyContent="space-around"
-        m="20px"
-        pb="50px"
-      >
-        {isSuccess &&
-          !isFetching &&
-          Object.keys(data?.data)?.map(
-            (item: any, i: Key | null | undefined) => (
-              <Card
-                key={i}
-                as={Link}
-                to={`/live/${provider}/${item}`}
-                state={{ ...location.state, [item]: data.data[item].name }}
-                minW="200px"
-                maxW="220px"
-              >
-                <CardBody
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-evenly"
-                >
-                  <Image
-                    src={
-                      data.data[item].img ||
-                      "https://www.shutterstock.com/image-vector/picture-vector-icon-no-image-600w-1350441335.jpg"
-                    }
-                    width="100%"
-                    maxH="90px"
-                    objectFit="contain"
-                    alt={data.data[item].name}
-                    borderRadius="lg"
-                  />
-                  <Heading size="md" pt="2" alignSelf="center">
-                    {data.data[item].name}
-                  </Heading>
-                </CardBody>
-              </Card>
-            )
-          )}
-      </Flex>
-    </>
+    <SimpleGrid minChildWidth={["150px", "180px"]} spacing="20px" mx="20px" pb="6">
+      {isSuccess &&
+        !isFetching &&
+        Object.keys(data?.data)?.map((item: any, i: Key | null | undefined) => (
+          <Card
+            key={i}
+            as={Link}
+            to={`/live/${provider}/${item}`}
+            state={{ ...location.state, [item]: data.data[item].name }}
+            // minW="200px"
+            maxW="220px"
+            _hover={{ bg: cardHover }}
+          >
+            <CardBody
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-evenly"
+            >
+              <Image
+                src={
+                  data.data[item].img ||
+                  "https://www.shutterstock.com/image-vector/picture-vector-icon-no-image-600w-1350441335.jpg"
+                }
+                width="100%"
+                maxH="90px"
+                objectFit="contain"
+                alt={data.data[item].name}
+                borderRadius="lg"
+              />
+              <Heading size="md" pt="2" alignSelf="center">
+                {data.data[item].name}
+              </Heading>
+            </CardBody>
+          </Card>
+        ))}
+    </SimpleGrid>
   );
 }

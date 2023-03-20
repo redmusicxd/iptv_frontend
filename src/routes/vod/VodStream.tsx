@@ -75,7 +75,7 @@ export default function VodStream() {
       <>
         <Box
           w="100%"
-          h="calc(100% - var(--toolbar-size))"
+          h="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"
@@ -94,7 +94,7 @@ export default function VodStream() {
   if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
         <Box p="6" bg="white" w="100%">
-          <Skeleton height="260px"/>
+          <Skeleton height="260px" borderRadius="4"/>
         </Box>
     );
 
@@ -103,7 +103,7 @@ export default function VodStream() {
       <>
         <Box
           w="100%"
-          h="calc(100% - var(--toolbar-size))"
+          h="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"

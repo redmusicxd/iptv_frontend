@@ -5,7 +5,7 @@ export default function NoMatch() {
   return (
     <Box
       w="100%"
-      h="calc(100% - var(--toolbar-size))"
+      h="100%"
       display="flex"
       flexDirection="column"
       justifyContent="center"

@@ -55,7 +55,7 @@ export default function VodEpisodesList() {
       <>
         <Box
           w="100%"
-          h="calc(100% - var(--toolbar-size))"
+          h="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"
@@ -75,7 +75,7 @@ export default function VodEpisodesList() {
     return (
       <Flex wrap="wrap" justify="center" gap="4">
         {Array.from({ length: 8 }, (_: any, i: number) => i + 1).map((_, i) => (
-          <Skeleton maxW="218px" h="218px" m="0" key={i}>
+          <Skeleton maxW="218px" h="218px" m="0" key={i} borderRadius="4">
             <Card maxW="sm">
               <CardBody w="218px" h="219px"></CardBody>
             </Card>
@@ -89,7 +89,7 @@ export default function VodEpisodesList() {
       <>
         <Box
           w="100%"
-          h="calc(100% - var(--toolbar-size))"
+          h="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"

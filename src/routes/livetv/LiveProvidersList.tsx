@@ -31,7 +31,7 @@ export default function ProvidersList() {
       <>
         <Box
           w="100%"
-          h="calc(100% - var(--toolbar-size))"
+          h="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"
@@ -47,7 +47,7 @@ export default function ProvidersList() {
     return (
       <Flex wrap="wrap" justify="center" gap="4">
         {Array.from({ length: 8 }, (_: any, i: number) => i + 1).map((_, i) => (
-          <Skeleton maxW="218px" h="218px" m="0" key={i}>
+          <Skeleton maxW="218px" h="218px" m="0" key={i} borderRadius="4">
             <Card maxW="sm">
               <CardBody w="218px" h="219px"></CardBody>
             </Card>
@@ -61,7 +61,7 @@ export default function ProvidersList() {
       <SimpleGrid
         spacing={4}
         templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-        m="20px"
+        mx="20px"
         pb="50px"
       >
         {status == "success" &&
