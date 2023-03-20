@@ -16,7 +16,7 @@ export default function Index() {
       </Text> */}
       <Wrap spacing="50px" justify="center">
         <WrapItem>
-          <Card as={Link} to="/live">
+          <Card as={Link} to="/live" state={{live: "Live TV"}}>
             <CardBody display="flex" alignItems="center">
               <Text fontSize="4xl" align="center">Live TV</Text>
               <ArrowForwardIcon fontSize="4xl"/>
@@ -24,7 +24,7 @@ export default function Index() {
           </Card>
         </WrapItem>
         <WrapItem>
-          <Card as={Link} to="/vod">
+          <Card as={Link} to="/vod" state={{vod: "VOD"}}>
             <CardBody display="flex" alignItems="center">
               <Text fontSize="4xl">VOD</Text>
               <ArrowForwardIcon fontSize="4xl"/>

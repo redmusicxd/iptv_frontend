@@ -1,38 +1,23 @@
-import { ArrowBackIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import {
   Alert,
   AlertDescription,
   AlertIcon,
   AlertTitle,
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Button,
-  ButtonGroup,
   Card,
   CardBody,
-  CardFooter,
-  CardHeader,
-  Divider,
   Heading,
-  Image,
-  SimpleGrid,
-  Stack,
   Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { useQuery } from "react-query";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import videojs from "video.js";
 import getVodStream from "../../apis/GetVodStream";
 import VideoJS from "../../components/Player";
-// import "videojs-contrib-eme";
 
 export default function VodStream() {
   const playerRef = React.useRef(null);
-
-  const location = useLocation();
 
   let { provider, show, epid } = useParams();
   const {
@@ -55,6 +40,8 @@ export default function VodStream() {
       refetchOnReconnect: false,
     }
   );
+
+
   const videoJsOptions = {
     src: data?.data?.stream.includes(".m3u8")
       ? `${
@@ -80,86 +67,10 @@ export default function VodStream() {
       videojs.log("player will dispose");
     });
   };
-  // if (isSuccess) {
-  //   window.location.href = data.data.stream;
-  // }
 
   if (isError && !isFetching) {
     return (
       <>
-        <Breadcrumb
-          pl="5"
-          pt="2"
-          pb="4"
-          separator={<ChevronRightIcon color="gray.500" />}
-        >
-          <Button mr="4" as={Link} to=".." relative="path">
-            <ArrowBackIcon color="white.500" />
-          </Button>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to="/"
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to="/vod"
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              VOD
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {provider
-                ?.split("-")
-                .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                .join(" ")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {location.state?.show || show}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}/${epid}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {location.state?.epname || epid}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
         <Box
           w="100%"
           h="calc(100% - var(--toolbar-size))"
@@ -178,82 +89,9 @@ export default function VodStream() {
     );
   }
 
-  if ((isFetching && !isFetchedAfterMount) || isLoading)
+  if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
       <>
-        <Breadcrumb
-          pl="5"
-          pt="2"
-          pb="4"
-          separator={<ChevronRightIcon color="gray.500" />}
-        >
-          <Button mr="4" as={Link} to=".." relative="path">
-            <ArrowBackIcon color="white.500" />
-          </Button>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to="/"
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to="/vod"
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              VOD
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {provider
-                ?.split("-")
-                .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                .join(" ")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {location.state?.show || show}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}/${epid}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {location.state?.epname || epid}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
         <Box
           w="100%"
           h="calc(100% - var(--toolbar-size))"
@@ -270,79 +108,6 @@ export default function VodStream() {
   if (data && data?.data?.length == 0) {
     return (
       <>
-        <Breadcrumb
-          pl="5"
-          pt="2"
-          pb="4"
-          separator={<ChevronRightIcon color="gray.500" />}
-        >
-          <Button mr="4" as={Link} to=".." relative="path">
-            <ArrowBackIcon color="white.500" />
-          </Button>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to="/"
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to="/vod"
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              VOD
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {provider
-                ?.split("-")
-                .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                .join(" ")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {location.state?.show || show}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}/${epid}`}
-              state={{
-                show: location.state?.show,
-                epname: location.state?.epname,
-              }}
-            >
-              {location.state?.epname || epid}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
         <Box
           w="100%"
           h="calc(100% - var(--toolbar-size))"
@@ -360,83 +125,9 @@ export default function VodStream() {
   }
   return (
     <>
-      <Breadcrumb
-        pl="5"
-        pt="2"
-        pb="4"
-        separator={<ChevronRightIcon color="gray.500" />}
-      >
-        <Button mr="4" as={Link} to=".." relative="path">
-          <ArrowBackIcon color="white.500" />
-        </Button>
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            as={Link}
-            to="/"
-            state={{
-              show: location.state?.show,
-              epname: location.state?.epname,
-            }}
-          >
-            Home
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            as={Link}
-            to="/vod"
-            state={{
-              show: location.state?.show,
-              epname: location.state?.epname,
-            }}
-          >
-            VOD
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            as={Link}
-            to={`/vod/${provider}`}
-            state={{
-              show: location.state?.show,
-              epname: location.state?.epname,
-            }}
-          >
-            {provider
-              ?.split("-")
-              .map((a: string) => a[0].toUpperCase() + a.substring(1))
-              .join(" ")}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            as={Link}
-            to={`/vod/${provider}/${show}`}
-            state={{
-              show: location.state?.show,
-              epname: location.state?.epname,
-            }}
-          >
-            {location.state?.show || show}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink
-            as={Link}
-            to={`/vod/${provider}/${show}/${epid}`}
-            state={{
-              show: location.state?.show,
-              epname: location.state?.epname,
-            }}
-          >
-            {location.state?.epname || epid}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
       {isSuccess && (
         <Card mb="2">
           <CardBody>
-            {/* <Text>{data?.data?.stream}</Text> */}
             <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
           </CardBody>
         </Card>

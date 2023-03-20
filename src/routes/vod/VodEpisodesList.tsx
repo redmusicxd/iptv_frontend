@@ -1,13 +1,9 @@
-import { ArrowBackIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import {
   Alert,
   AlertDescription,
   AlertIcon,
   AlertTitle,
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
   Button,
   Card,
   CardBody,
@@ -56,42 +52,6 @@ export default function VodEpisodesList() {
   if (isError && !isFetching) {
     return (
       <>
-        <Breadcrumb
-          pl="5"
-          pt="2"
-          separator={<ChevronRightIcon color="gray.500" />}
-        >
-          <Button mr="4" as={Link} to=".." relative="path">
-            <ArrowBackIcon color="white.500" />
-          </Button>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/">
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/vod">
-              VOD
-            </BreadcrumbLink>
-          </BreadcrumbItem>{" "}
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to={`/vod/${provider}`}>
-              {provider
-                ?.split("-")
-                .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                .join(" ")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}`}
-              state={{ show: location.state?.show }}
-            >
-              {location.state?.show || show}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
         <Box
           w="100%"
           h="calc(100% - var(--toolbar-size))"
@@ -113,42 +73,6 @@ export default function VodEpisodesList() {
   if ((isFetched && !isFetchedAfterMount) || isLoading)
     return (
       <>
-        <Breadcrumb
-          pl="5"
-          pt="2"
-          separator={<ChevronRightIcon color="gray.500" />}
-        >
-          <Button mr="4" as={Link} to=".." relative="path">
-            <ArrowBackIcon color="white.500" />
-          </Button>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/">
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/vod">
-              VOD
-            </BreadcrumbLink>
-          </BreadcrumbItem>{" "}
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to={`/vod/${provider}`}>
-              {provider
-                ?.split("-")
-                .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                .join(" ")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}`}
-              state={{ show: location.state?.show }}
-            >
-              {location.state?.show || show}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
         <Box
           w="100%"
           h="calc(100% - var(--toolbar-size))"
@@ -165,42 +89,6 @@ export default function VodEpisodesList() {
   if (data && data?.pages[0].data?.length == 0) {
     return (
       <>
-        <Breadcrumb
-          pl="5"
-          pt="2"
-          separator={<ChevronRightIcon color="gray.500" />}
-        >
-          <Button mr="4" as={Link} to=".." relative="path">
-            <ArrowBackIcon color="white.500" />
-          </Button>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/">
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/vod">
-              VOD
-            </BreadcrumbLink>
-          </BreadcrumbItem>{" "}
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to={`/vod/${provider}`}>
-              {provider
-                ?.split("-")
-                .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                .join(" ")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink
-              as={Link}
-              to={`/vod/${provider}/${show}`}
-              state={{ show: location.state?.show }}
-            >
-              {location.state?.show || show}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
         <Box
           w="100%"
           h="calc(100% - var(--toolbar-size))"
@@ -218,47 +106,11 @@ export default function VodEpisodesList() {
   }
   return (
     <>
-      <Breadcrumb
-        pl="5"
-        pt="2"
-        separator={<ChevronRightIcon color="gray.500" />}
-      >
-        <Button mr="4" as={Link} to=".." relative="path">
-          <ArrowBackIcon color="white.500" />
-        </Button>
-        <BreadcrumbItem>
-          <BreadcrumbLink as={Link} to="/">
-            Home
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink as={Link} to="/vod">
-            VOD
-          </BreadcrumbLink>
-        </BreadcrumbItem>{" "}
-        <BreadcrumbItem>
-          <BreadcrumbLink as={Link} to={`/vod/${provider}`}>
-            {provider
-              ?.split("-")
-              .map((a: string) => a[0].toUpperCase() + a.substring(1))
-              .join(" ")}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink
-            as={Link}
-            to={`/vod/${provider}/${show}`}
-            state={{ show: location.state?.show }}
-          >
-            {location.state?.show || show}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
       <SimpleGrid
         spacing={4}
         templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-        m="20px"
-        pb="50px"
+        mx="20px"
+        // pb="50px"
       >
         {isSuccess &&
           data.pages.map((page, i) =>
@@ -267,7 +119,7 @@ export default function VodEpisodesList() {
                 maxW="sm"
                 as={Link}
                 to={`/vod/${provider}/${show}/${item.id}`}
-                state={{ show: location.state?.show, epname: item.name }}
+                state={{ ...location.state, [show || "show"]: location.state?.[show || ""], [item.id || "epname"]: item.name }}
               >
                 <CardBody>
                   <Image

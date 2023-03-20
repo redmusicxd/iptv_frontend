@@ -3,11 +3,12 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import {
   ChakraProvider,
+  ColorModeScript,
   extendTheme,
+  StyleFunctionProps,
   type ThemeConfig,
 } from "@chakra-ui/react";
 import {
-  BrowserRouter,
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
@@ -24,10 +25,31 @@ import VodStream from "./routes/vod/VodStream";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
-  useSystemColorMode: false,
+  useSystemColorMode: true,
 };
 
-const theme = extendTheme({ config });
+const theme = extendTheme(
+  { config },
+  {
+    components: {
+      Card: {
+        // The styles all Cards have in common
+        baseStyle: (props: StyleFunctionProps) => ({
+          container: {
+            bg:
+              props.colorMode === "dark" ? "whiteAlpha.100" : "blackAlpha.100",
+            shadow: "sm"
+          },
+        }),
+      },
+      Button: {
+        baseStyle: {
+          shadow: "sm",
+        },
+      },
+    },
+  }
+);
 
 let router = createBrowserRouter([
   {
@@ -78,6 +100,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <RouterProvider router={router} fallbackElement={<NoMatch />} />
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       {/* <App /> */}
     </ChakraProvider>
   </React.StrictMode>

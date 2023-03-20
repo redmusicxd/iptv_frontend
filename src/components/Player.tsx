@@ -26,7 +26,14 @@ export function VideoJS(props: any) {
 
       videoElement.classList.add("vjs-big-play-centered");
       videoRef.current.appendChild(videoElement);
-
+      // let options1;
+      // videojs.Vhs.xhr.beforeRequest = function (options, callback) {
+      //   /*
+      //    * Modifications to requests that will affect every player.
+      //    */
+      //   options1 = options;
+      //   return options;
+      // };
       const player = videojs(
         videoElement,
         { autoplay: true, controls: true, responsive: true, fluid: true },
@@ -35,6 +42,7 @@ export function VideoJS(props: any) {
           onReady && onReady(player);
         }
       ) as EME;
+  
       playerRef.current = player;
       player.eme1();
 

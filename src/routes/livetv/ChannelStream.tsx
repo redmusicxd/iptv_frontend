@@ -70,48 +70,18 @@ export default function ChannelStream(props) {
     player?.on("dispose", () => {
       videojs.log("player will dispose");
     });
+    player.tech().on("retryplaylist", () => {
+      player.src({
+        src: `${
+          import.meta.env.VITE_API_BASE_URL
+        }/${provider}/live/${channel}/index.m3u8?cf_bypass=1&cors=1`,
+      });
+    });
   };
 
   if (isError && !isFetching) {
     return (
       <>
-        <Breadcrumb
-          pl="5"
-          pt="2"
-          pb="4"
-          separator={<ChevronRightIcon color="gray.500" />}
-        >
-          <Button mr="4" as={Link} to=".." relative="path">
-            <ArrowBackIcon color="white.500" />
-          </Button>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/">
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbLink as={Link} to="/live" isCurrentPage>
-              Live TV
-            </BreadcrumbLink>
-          </BreadcrumbItem>{" "}
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink as={Link} to={`/live/${provider}`}>
-              {provider
-                ?.split("-")
-                .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                .join(" ")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>{" "}
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink as={Link} to={`/live/${provider}`}>
-              {location.state?.show ||
-                channel
-                  ?.split("-")
-                  .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                  .join(" ")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
         <Box
           w="100%"
           h="calc(100% - var(--toolbar-size))"
@@ -146,43 +116,6 @@ export default function ChannelStream(props) {
 
   return (
     <>
-      <Breadcrumb
-        pl="5"
-        pt="2"
-        pb="4"
-        separator={<ChevronRightIcon color="gray.500" />}
-      >
-        <Button mr="4" as={Link} to=".." relative="path">
-          <ArrowBackIcon color="white.500" />
-        </Button>
-        <BreadcrumbItem>
-          <BreadcrumbLink as={Link} to="/">
-            Home
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink as={Link} to="/live" isCurrentPage>
-            Live TV
-          </BreadcrumbLink>
-        </BreadcrumbItem>{" "}
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink as={Link} to={`/live/${provider}`}>
-            {provider
-              ?.split("-")
-              .map((a: string) => a[0].toUpperCase() + a.substring(1))
-              .join(" ")}
-          </BreadcrumbLink>
-        </BreadcrumbItem>{" "}
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink as={Link} to={`/live/${provider}`}>
-            {location.state?.show ||
-              channel
-                ?.split("-")
-                .map((a: string) => a[0].toUpperCase() + a.substring(1))
-                .join(" ")}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
       {isSuccess && (
         <Card mb="2">
           <CardBody>
